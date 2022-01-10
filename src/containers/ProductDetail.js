@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectedProduct,
   removeSelectedProduct,
+  fetchProduct,
 } from "../redux/actions/productActions";
 
 const ProductDetail = () => {
@@ -12,17 +12,16 @@ const ProductDetail = () => {
   const { image, title, description, category, price } = product;
   const { productId } = useParams();
   const dispatch = useDispatch();
-  console.log(product);
 
-  const fetchProductDetail = async () => {
-    const response = await axios
-      .get(`https://fakestoreapi.com/products/${productId}`)
-      .catch((err) => console.log("Err", err));
+  // const fetchProductDetail = async () => {
+  //   const response = await axios
+  //     .get(`https://fakestoreapi.com/products/${productId}`)
+  //     .catch((err) => console.log("Err", err));
 
-    dispatch(selectedProduct(response.data));
-  };
+  //   dispatch(selectedProduct(response.data));
+  // };
   useEffect(() => {
-    if (productId && productId !== "") fetchProductDetail();
+    if (productId && productId !== "") dispatch(fetchProduct(productId));
     return () => {
       dispatch(removeSelectedProduct());
     };
@@ -38,7 +37,7 @@ const ProductDetail = () => {
             <div className="ui vertical divider">AND</div>
             <div className="middle aligned row">
               <div className="column lp">
-                <img className="ui fluid image" src={image} />
+                <img alt="product" className="ui fluid image" src={image} />
               </div>
               <div className="column rp">
                 <h1>{title}</h1>
